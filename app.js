@@ -1,5 +1,4 @@
-const revenu = 38000 // - 3617.34
-const revenu2 = 38000 - 5417.34
+
 const RATE_2020 = [
     {
         max : 10064,
@@ -24,6 +23,7 @@ const RATE_2020 = [
 
 ]
 
+
 function impots(revenu, rates = RATE_2020 ){
     imposition = new Array(rates.length).fill(0);
     tranche = 0
@@ -34,7 +34,8 @@ function impots(revenu, rates = RATE_2020 ){
         imposition[index] = imp * rate.rate;     
     }
     //console.log(imposition)
-    console.log(imposition.reduce( (current, acc) => current + acc))
+    //console.log(imposition.reduce( (current, acc) => current + acc))
+    return imposition
 
 }
 //revenu apres impots
@@ -52,8 +53,35 @@ function reversedImpots(revenu, rates = RATE_2020){
         }
         imposition[index] = imp * rate.rate;     
     }
-    console.log(imposition.reduce( (current, acc) => current + acc))
-    console.log(imposition)
+    //console.log(imposition.reduce( (current, acc) => current + acc))
+    //console.log(imposition)
+    return imposition
 }
-impots(revenu)
-reversedImpots(revenu2)
+
+
+const before = document.getElementById("ImpotsB")
+const after = document.getElementById("ImpotsA")
+const impot = document.getElementById("Impots")
+
+
+before.addEventListener("change", (e) => {
+    const n = Number.parseFloat(before.value)
+    if(!isNaN(n)){
+        const impots1 = impots(before.value)
+        after.value = n - impots1.reduce( (current, acc) => current + acc)
+        impot.value = impots1.reduce( (current, acc) => current + acc)
+
+    }
+})
+
+after.addEventListener("change", (e) =>{
+    const n = Number.parseFloat(after.value)
+    if(!isNaN(n)){
+        const impots1 = reversedImpots(after.value)
+        before.value = n + impots1.reduce( (current, acc) => current + acc)
+        impot.value = impots1.reduce( (current, acc) => current + acc)
+    }
+} )
+
+//const impots1 = impots(revenu)
+//const impots2 = reversedImpots(revenu2)
